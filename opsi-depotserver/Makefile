@@ -11,6 +11,9 @@ WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTNAME}
 
 NO_BUILD=	yes
 
+USES=	shebangfix python
+SHEBANG_FILES=	opsi-setup opsi-set-rights
+
 #RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ldap:net/py-ldap
 LIB_DEPENDS=	libnewt.so:devel/newt
 
