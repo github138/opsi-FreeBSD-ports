@@ -31,6 +31,7 @@ do-install:
 #	${PW} addgroup pcpatch
 #	${PW} useradd -G pcpatch opsiconfd
 	${INSTALL_SCRIPT} ${WRKSRC}/opsi-setup ${STAGEDIR}${PREFIX}/bin	
+	${REINPLACE_CMD} -e 's|/usr/bin|${PREFIX}/bin|g' ${WRKSRC}/opsi-set-rights
 	${INSTALL_SCRIPT} ${WRKSRC}/opsi-set-rights ${STAGEDIR}${PREFIX}/bin	
 
 post-install:
@@ -41,5 +42,6 @@ post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/var/log/opsi/clientconnect
 	${MKDIR} ${STAGEDIR}${PREFIX}/var/log/opsi/instlog
 	${MKDIR} ${STAGEDIR}${PREFIX}/var/log/opsi/userlogin
+	${MKDIR} ${STAGEDIR}/home/opsiproducts
 
 .include <bsd.port.mk>

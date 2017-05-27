@@ -8,3 +8,4 @@ bin/opsi-setup
 @dir var/log/opsi/clientconnect
 @dir var/log/opsi/instlog
 @dir var/log/opsi/userlogin
+@dir /home/opsiproducts
