@@ -1,0 +1,10 @@
+@mode 0755
+bin/opsi-set-rights
+bin/opsi-setup
+@mode
+@dir var/lib/opsi/ntfs-images
+@dir var/lib/opsi/repository
+@dir var/log/opsi/bootimage
+@dir var/log/opsi/clientconnect
+@dir var/log/opsi/instlog
+@dir var/log/opsi/userlogin
