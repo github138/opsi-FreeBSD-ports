@@ -35,6 +35,10 @@ post-extract:
 
 pre-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/opsiconfd/static
+	${MKDIR} ${STAGEDIR}${PREFIX}/lib/configed
+	${MKDIR} ${STAGEDIR}${PREFIX}/etc/opsi/modules
+	${MKDIR} ${STAGEDIR}${PREFIX}/etc/opsi/config/clients
+	${MKDIR} ${STAGEDIR}${PREFIX}/var/lib/opsi/config/depots
 
 #do-install:
 #	${PW} addgroup pcpatch
@@ -49,7 +53,7 @@ pre-install:
 #	   -d ${PYTHONPREFIX_SITELIBDIR} -f ${PYTHONPREFIX_SITELIBDIR:S;${PREFIX}/;;})
 
 post-install:
-	${MKDIR} ${STAGEDIR}${PREFIX}/lib/configed
+#	${MKDIR} ${STAGEDIR}${PREFIX}/lib/configed
 #	${MKDIR} ${STAGEDIR}${PREFIX}/share/opsiconfd/static
 #	(cd ${WRKSRC}/data/shared && ${COPYTREE_SHARE} . ${STAGEDIR}/share/opsiconfd/static)
 #        ${MKDIR} ${STAGEDIR}${PREFIX}/var/lib/opsiconfd/rrd
