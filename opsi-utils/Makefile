@@ -25,22 +25,8 @@ post-extract:
 	${REINPLACE_CMD} -e "s|'/etc/|'${PREFIX}/etc/|g" ${WRKSRC}/opsi-*
 
 do-install:
-#	${PW} addgroup pcpatch
-#	${PW} useradd -G pcpatch opsiconfd
 	${RM}  ${WRKSRC}/opsi-*.bak
 	${MKDIR} ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_SCRIPT} ${WRKSRC}/opsi-* ${STAGEDIR}${PREFIX}/bin	
-#	${REINPLACE_CMD} -e 's|/usr/bin|${PREFIX}/bin|g' ${WRKSRC}/opsi-set-rights
-#	${INSTALL_SCRIPT} ${WRKSRC}/opsi-set-rights ${STAGEDIR}${PREFIX}/bin	
-
-#post-install:
-#	${MKDIR} ${STAGEDIR}${PREFIX}/var
-#	${MKDIR} ${STAGEDIR}${PREFIX}/var/lib/opsi/ntfs-images
-#	${MKDIR} ${STAGEDIR}${PREFIX}/var/lib/opsi/repository
-#	${MKDIR} ${STAGEDIR}${PREFIX}/var/log/opsi/bootimage
-#	${MKDIR} ${STAGEDIR}${PREFIX}/var/log/opsi/clientconnect
-#	${MKDIR} ${STAGEDIR}${PREFIX}/var/log/opsi/instlog
-#	${MKDIR} ${STAGEDIR}${PREFIX}/var/log/opsi/userlogin
-#	${MKDIR} ${STAGEDIR}/home/opsiproducts
 
 .include <bsd.port.mk>
