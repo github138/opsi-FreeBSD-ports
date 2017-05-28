@@ -54,6 +54,7 @@ post-patch:
 	${REINPLACE_CMD} -e "s|'/var/|'${PREFIX}/var/|g" ${WRKSRC}/data/backendManager/extend.d/configed/*.conf
 	${REINPLACE_CMD} -e "s|'/var/|'${PREFIX}/var/|g" ${WRKSRC}/tests/*.py
 	${REINPLACE_CMD} -e "s|'share/|'${PREFIX}/share/|g" ${WRKSRC}/setup.py
+	${MKDIR} ${PREFIX}/etc/opsi
 
 post-install:
 	${PYTHON_CMD} -m pip install python-pam
