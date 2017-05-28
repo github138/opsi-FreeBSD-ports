@@ -10,16 +10,14 @@ DISTFILES=	${DISTVERSION}-${DISTVERSIONSUFFIX}${EXTRACT_SUFX}
 MASTER_SITES=	https://github.com/opsi-org/${GH_PROJECT}/archive/
 CATEGORIES=	sysutils
 
+COMMENT=	This package contains the opsi python library.
+
 WRKSRC=		${WRKDIR}/${GH_PROJECT}-${DISTNAME}
 
 NO_BUILD=	yes
 
-#USE_GITHUB=	yes
-
 USES=		python
 USE_PYTHON=     autoplist distutils
-
-#SHEBANG_FILES=	opsi-setup opsi-set-rights
 
 RUN_DEPENDS=	duplicity:sysutils/duplicity \
 		${PYTHON_PKGNAMEPREFIX}twisted>0:devel/py-twisted \
@@ -28,30 +26,21 @@ RUN_DEPENDS=	duplicity:sysutils/duplicity \
 		${PYTHON_PKGNAMEPREFIX}service_identity>0:security/py-service_identity \
 		${PYTHON_PKGNAMEPREFIX}magic>0:devel/py-magic \
 		${PYTHON_PKGNAMEPREFIX}pip>0:devel/py-pip
-#LIB_DEPENDS=	libnewt.so:devel/newt
 
-MAINTAINER=	youremail@example.com
-COMMENT=	OPSI org Depotserver
+MAINTAINER=	m.ehinger@ltur.de
 
 post-extract:
+	${REINPLACE_CMD} -e "s|'/usr/|'${PREFIX}/|g" ${WRKSRC}/setup.py
+	${REINPLACE_CMD} -e "s|'/usr/|'${PREFIX}/|g" ${WRKSRC}/OPSI/UI.py
+	${REINPLACE_CMD} -e "s|'/usr/|'${PREFIX}/|g" ${WRKSRC}/OPSI/Util/Task/Backup.py
+	${REINPLACE_CMD} -e "s|'/usr/|'${PREFIX}/|g" ${WRKSRC}/tests/manual_tests/test_ui.py
 	${REINPLACE_CMD} -e "s|'/etc/|'${PREFIX}/etc/|g" ${WRKSRC}/setup.py
+	${REINPLACE_CMD} -e "s|'/etc/|'${PREFIX}/etc/|g" ${WRKSRC}/tests/test_util_task_samba.py
 	${REINPLACE_CMD} -e "s|'share/|'${PREFIX}/share/|g" ${WRKSRC}/setup.py
-
-#pre-install:
-
-#do-install:
-#	${PW} addgroup pcpatch
-#	${PW} useradd -G pcpatch opsiconfd
-#	${INSTALL_SCRIPT} ${WRKSRC}/opsi-setup ${STAGEDIR}${PREFIX}/bin	
-#	${REINPLACE_CMD} -e 's|/usr/bin|${PREFIX}/bin|g' ${WRKSRC}/opsi-set-rights
-#	${INSTALL_SCRIPT} ${WRKSRC}/opsi-set-rights ${STAGEDIR}${PREFIX}/bin	
 
 post-install:
 	${PYTHON_CMD} -m pip install python-pam
 	${PYTHON_CMD} -m pip install -r ${WRKSRC}/requirements.txt
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/opsi/modules
-#        ${MKDIR} ${STAGEDIR}${PREFIX}/usr/share/opsiconfd/static
-#        ${MKDIR} ${STAGEDIR}${PREFIX}/var/lib/opsiconfd/rrd
-#        ${MKDIR} ${STAGEDIR}${PREFIX}/var/log/opsi/opsiconfd
 
 .include <bsd.port.mk>
