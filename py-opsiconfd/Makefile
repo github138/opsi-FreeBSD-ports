@@ -38,7 +38,8 @@ post-extract:
 pre-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/opsiconfd/static
 	${MKDIR} ${STAGEDIR}${PREFIX}/lib/configed
-	${MKDIR} ${STAGEDIR}${PREFIX}/etc/opsi/modules
+	${MKDIR} ${STAGEDIR}${PREFIX}/etc/opsi
+	#${TOUCH} ${STAGEDIR}${PREFIX}/etc/opsi/modules
 	${MKDIR} ${STAGEDIR}${PREFIX}/var/lib/opsi/config/clients
 	${MKDIR} ${STAGEDIR}${PREFIX}/var/lib/opsi/config/depots
 	${MKDIR} ${STAGEDIR}${PREFIX}/var/lib/opsi/config/products
