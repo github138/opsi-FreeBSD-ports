@@ -17,7 +17,9 @@ NO_BUILD=	yes
 USES=		python
 USE_PYTHON=     autoplist distutils
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ldap>0:net/py-ldap
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ldap>0:net/py-ldap \
+		${PYTHON_PKGNAMEPREFIX}dbus>0:devel/py-dbus \
+		${PYTHON_PKGNAMEPREFIX}avahi>0:net/py-avahi
 #RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}OPSI>0:sysutils/py-python-opsi
 
 MAINTAINER=	m.ehinger@ltur.de
@@ -90,7 +92,6 @@ post-install:
 		${CHMOD} 600 ${PREFIX}/etc/opsi/opsiconfd.pem; \
 	fi
 
-	#chown opsiconfd:opsiadmin ${PREFIX}/etc/opsi/opsiconfd.pem || true
 	@if [ ! -e ${PREFIX}/etc/opsi/backendManager/dispatch.conf ]; then \
 		${ECHO_CMD} "Using default dispatch.conf.."; \
 		${CP} ${PREFIX}/etc/opsi/backendManager/dispatch.conf.default ${PREFIX}/etc/opsi/backendManager/dispatch.conf; \
