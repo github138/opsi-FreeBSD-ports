@@ -1,0 +1,8 @@
+/share/opsiconfd/static/favicon.ico
+/share/opsiconfd/static/index.html
+/share/opsiconfd/static/opsi_logo.png
+@dir lib/configed
+@dir /share/opsiconfd/static
+@dir /share/opsiconfd
+@dir /share
+

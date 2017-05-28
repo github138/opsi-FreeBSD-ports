@@ -35,12 +35,27 @@ post-extract:
 	${REINPLACE_CMD} -e "s|'/usr/|'${PREFIX}/|g" ${WRKSRC}/OPSI/Util/Task/Backup.py
 	${REINPLACE_CMD} -e "s|'/usr/|'${PREFIX}/|g" ${WRKSRC}/tests/manual_tests/test_ui.py
 	${REINPLACE_CMD} -e "s|'/etc/|'${PREFIX}/etc/|g" ${WRKSRC}/setup.py
+	${REINPLACE_CMD} -e "s|'/etc/|'${PREFIX}/etc/|g" ${WRKSRC}/OPSI/Backend/Backend.py
+	${REINPLACE_CMD} -e "s|'/etc/|'${PREFIX}/etc/|g" ${WRKSRC}/OPSI/Backend/BackendManager.py
+	${REINPLACE_CMD} -e "s|'/etc/|'${PREFIX}/etc/|g" ${WRKSRC}/OPSI/Util/Task/CleanupBackend.py
+	${REINPLACE_CMD} -e "s|'/etc/|'${PREFIX}/etc/|g" ${WRKSRC}/OPSI/Util/Task/ConfigureBackend/ConfigurationData.py
+	${REINPLACE_CMD} -e "s|'/etc/|'${PREFIX}/etc/|g" ${WRKSRC}/tests/test_backend_backendmanager.py
+	${REINPLACE_CMD} -e "s|'/etc/|'${PREFIX}/etc/|g" ${WRKSRC}/tests/test_util_file_opsi_backup.py
+	${REINPLACE_CMD} -e 's|"/etc/|"${PREFIX}/etc/|g' ${WRKSRC}/OPSI/System/Posix.py
 	${REINPLACE_CMD} -e "s|'/etc/|'${PREFIX}/etc/|g" ${WRKSRC}/tests/test_util_task_samba.py
+	${REINPLACE_CMD} -e "s|'/var/|'${PREFIX}/var/|g" ${WRKSRC}/OPSI/Backend/File.py
+	${REINPLACE_CMD} -e "s|'/var/|'${PREFIX}/var/|g" ${WRKSRC}/OPSI/Util/Task/*.py
+	${REINPLACE_CMD} -e 's|"/var/|"${PREFIX}/var/|g' ${WRKSRC}/OPSI/Util/Task/*.py
+	${REINPLACE_CMD} -e 's|"/var/|"${PREFIX}/var/|g' ${WRKSRC}/data/backends/*.conf
+	${REINPLACE_CMD} -e "s|'/var/|'${PREFIX}/var/|g" ${WRKSRC}/data/backendManager/extend.d/*.conf
+	${REINPLACE_CMD} -e "s|'/var/|'${PREFIX}/var/|g" ${WRKSRC}/data/backendManager/extend.d/configed/*.conf
+	${REINPLACE_CMD} -e "s|'/var/|'${PREFIX}/var/|g" ${WRKSRC}/tests/*.py
 	${REINPLACE_CMD} -e "s|'share/|'${PREFIX}/share/|g" ${WRKSRC}/setup.py
 
 post-install:
 	${PYTHON_CMD} -m pip install python-pam
 	${PYTHON_CMD} -m pip install -r ${WRKSRC}/requirements.txt
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/opsi/modules
+	${MKDIR} ${STAGEDIR}${PREFIX}/var/lib/opsi/config/depots
 
 .include <bsd.port.mk>
