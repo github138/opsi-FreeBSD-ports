@@ -1,0 +1,7 @@
+bin/opsi-admin
+bin/opsi-backup
+bin/opsi-convert
+bin/opsi-makeproductfile
+bin/opsi-newprod
+bin/opsi-package-manager
+bin/opsi-product-updater
