@@ -37,7 +37,7 @@ pre-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/opsiconfd/static
 	${MKDIR} ${STAGEDIR}${PREFIX}/lib/configed
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/opsi/modules
-	${MKDIR} ${STAGEDIR}${PREFIX}/etc/opsi/config/clients
+	${MKDIR} ${STAGEDIR}${PREFIX}/var/lib/opsi/config/clients
 	${MKDIR} ${STAGEDIR}${PREFIX}/var/lib/opsi/config/depots
 
 #do-install:
