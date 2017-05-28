@@ -5,7 +5,7 @@ CATEGORIES=	ftp
 MASTER_SITES=	https://github.com/opsi-org/opsi-atftpd/archive/
 DISTNAME=	${PORTVERSION}.dfsg-${DISTVERSIONSUFFIX}
 
-COMMENT=	OPSI atftp server
+COMMENT=	Advanced tftp server and client
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}.dfsg-${DISTVERSIONSUFFIX}
 
