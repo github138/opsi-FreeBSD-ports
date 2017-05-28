@@ -29,12 +29,15 @@ RUN_DEPENDS=	duplicity:sysutils/duplicity \
 
 MAINTAINER=	m.ehinger@ltur.de
 
-post-extract:
+post-patch:
 	${REINPLACE_CMD} -e "s|'/usr/|'${PREFIX}/|g" ${WRKSRC}/setup.py
 	${REINPLACE_CMD} -e "s|'/usr/|'${PREFIX}/|g" ${WRKSRC}/OPSI/UI.py
 	${REINPLACE_CMD} -e "s|'/usr/|'${PREFIX}/|g" ${WRKSRC}/OPSI/Util/Task/Backup.py
 	${REINPLACE_CMD} -e "s|'/usr/|'${PREFIX}/|g" ${WRKSRC}/tests/manual_tests/test_ui.py
 	${REINPLACE_CMD} -e "s|'/etc/|'${PREFIX}/etc/|g" ${WRKSRC}/setup.py
+	${REINPLACE_CMD} -e "s|'/etc/|'${PREFIX}/etc/|g" ${WRKSRC}/OPSI/Util/File/Opsi/__init__.py
+	${REINPLACE_CMD} -e "s|'/etc/|'${PREFIX}/etc/|g" ${WRKSRC}/OPSI/Service/Worker.py
+	${REINPLACE_CMD} -e "s|'/etc/|'${PREFIX}/etc/|g" ${WRKSRC}/OPSI/Util/Task/Certificate.py
 	${REINPLACE_CMD} -e "s|'/etc/|'${PREFIX}/etc/|g" ${WRKSRC}/OPSI/Backend/Backend.py
 	${REINPLACE_CMD} -e "s|'/etc/|'${PREFIX}/etc/|g" ${WRKSRC}/OPSI/Backend/BackendManager.py
 	${REINPLACE_CMD} -e "s|'/etc/|'${PREFIX}/etc/|g" ${WRKSRC}/OPSI/Util/Task/CleanupBackend.py
@@ -55,7 +58,5 @@ post-extract:
 post-install:
 	${PYTHON_CMD} -m pip install python-pam
 	${PYTHON_CMD} -m pip install -r ${WRKSRC}/requirements.txt
-	${MKDIR} ${STAGEDIR}${PREFIX}/etc/opsi/modules
-	${MKDIR} ${STAGEDIR}${PREFIX}/var/lib/opsi/config/depots
 
 .include <bsd.port.mk>
