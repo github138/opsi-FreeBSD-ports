@@ -58,3 +58,37 @@ index 228f64b3..95bf28a3 100755
  
  			if self._forceGroups is not None:
  				self._userGroups = set(self._forceGroups)
+diff --git OPSI/System/Posix.py OPSI/System/Posix.py
+index 8a8dedda..39e20dc5 100644
+--- OPSI/System/Posix.py
++++ OPSI/System/Posix.py
+@@ -375,16 +375,20 @@ def getEthernetDevices():
+ 	:returntype: [str]
+ 	"""
+ 	devices = []
+-	with open("/proc/net/dev") as f:
+-		for line in f:
+-			line = line.strip()
+-			if not line or ':' not in line:
+-				continue
++	if platform.system().lower().endswith('bsd'):
++		# TODO ifconfig -l parsing
++		devices.append('em0')
++	else:
++		with open("/proc/net/dev") as f:
++			for line in f:
++				line = line.strip()
++				if not line or ':' not in line:
++					continue
+ 
+-			device = line.split(':')[0].strip()
+-			if device.startswith(('eth', 'ens', 'eno', 'tr', 'br', 'enp', 'enx')):
+-				logger.info(u"Found ethernet device: '{0}'".format(device))
+-				devices.append(device)
++				device = line.split(':')[0].strip()
++				if device.startswith(('eth', 'ens', 'eno', 'tr', 'br', 'enp', 'enx')):
++					logger.info(u"Found ethernet device: '{0}'".format(device))
++					devices.append(device)
+ 
+ 	return devices
+ 
