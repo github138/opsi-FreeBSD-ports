@@ -11,8 +11,8 @@ WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}
 
 NO_BUILD=	yes
 
-USES=	shebangfix python
-SHEBANG_FILES=	opsi-*
+USES=   shebangfix python
+SHEBANG_FILES=  opsi-*
 
 MAINTAINER=	m.ehinger@ltur.de
 COMMENT=	opsi-deploy-client-agent
@@ -20,6 +20,7 @@ COMMENT=	opsi-deploy-client-agent
 post-extract:
 	${REINPLACE_CMD} -e "s|'/usr/|'${PREFIX}/|g" ${WRKSRC}/opsi-*
 	${REINPLACE_CMD} -e "s| /usr/| ${PREFIX}/|g" ${WRKSRC}/opsi-*
+	${REINPLACE_CMD} -e "s| /usr/local/bin/env| /usr/bin/env|g" ${WRKSRC}/opsi-*
 	${REINPLACE_CMD} -e "s|'/etc/|'${PREFIX}/etc/|g" ${WRKSRC}/opsi-*
 	${REINPLACE_CMD} -e "s| /etc/| ${PREFIX}/etc/|g" ${WRKSRC}/opsi-*
 	${REINPLACE_CMD} -e "s|/usr/local/etc/hosts|/etc/hosts|g" ${WRKSRC}/opsi-*
