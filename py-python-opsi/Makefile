@@ -58,5 +58,7 @@ post-patch:
 post-install:
 	${PYTHON_CMD} -m pip install python-pam
 	${PYTHON_CMD} -m pip install -r ${WRKSRC}/requirements.txt
+	${INSTALL_DATA} ${WRKSRC}/data/backendManager/extend.d/*.conf ${STAGEDIR}${PREFIX}/etc/opsi/backendManager/extend.d
+	${INSTALL_DATA} ${WRKSRC}/data/hwaudit/locales/* ${STAGEDIR}${PREFIX}/etc/opsi/hwaudit
 
 .include <bsd.port.mk>
