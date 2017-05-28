@@ -33,7 +33,8 @@ post-extract:
 	${REINPLACE_CMD} -e "s|'/var/|'${PREFIX}/var/|g" ${WRKSRC}/opsiconfd/opsiconfd.py
 	${REINPLACE_CMD} -e "s|'share/|'${PREFIX}/share/|g" ${WRKSRC}/setup.py
 
-#pre-install:
+pre-install:
+	${MKDIR} ${STAGEDIR}${PREFIX}/share/opsiconfd/static
 
 #do-install:
 #	${PW} addgroup pcpatch
@@ -49,8 +50,8 @@ post-extract:
 
 post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/lib/configed
-	${MKDIR} ${STAGEDIR}${PREFIX}/share/opsiconfd/static
-	(cd ${WRKSRC}/data/shared && ${COPYTREE_SHARE} . ${STAGEDIR}/share/opsiconfd/static)
+#	${MKDIR} ${STAGEDIR}${PREFIX}/share/opsiconfd/static
+#	(cd ${WRKSRC}/data/shared && ${COPYTREE_SHARE} . ${STAGEDIR}/share/opsiconfd/static)
 #        ${MKDIR} ${STAGEDIR}${PREFIX}/var/lib/opsiconfd/rrd
 #        ${MKDIR} ${STAGEDIR}${PREFIX}/var/log/opsi/opsiconfd
 	@if [ ! -e ${PREFIX}/etc/opsi/opsiconfd.pem ]; then \
