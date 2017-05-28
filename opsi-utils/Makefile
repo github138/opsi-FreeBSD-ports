@@ -23,6 +23,7 @@ COMMENT=	This package contains the opsi util collection.
 post-extract:
 	${REINPLACE_CMD} -e "s|'/usr/|'${PREFIX}/|g" ${WRKSRC}/opsi-*
 	${REINPLACE_CMD} -e "s|'/etc/|'${PREFIX}/etc/|g" ${WRKSRC}/opsi-*
+	${REINPLACE_CMD} -e "s|'/var/|'${PREFIX}/var/|g" ${WRKSRC}/opsi-*
 
 do-install:
 	${RM}  ${WRKSRC}/opsi-*.bak
