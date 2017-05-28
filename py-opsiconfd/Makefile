@@ -43,6 +43,8 @@ pre-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/var/lib/opsi/config/clients
 	${MKDIR} ${STAGEDIR}${PREFIX}/var/lib/opsi/config/depots
 	${MKDIR} ${STAGEDIR}${PREFIX}/var/lib/opsi/config/products
+	${TOUCH} ${STAGEDIR}${PREFIX}/var/lib/opsi/config/clientgroups.ini
+	${TOUCH} ${STAGEDIR}${PREFIX}/var/lib/opsi/config/productgroups.ini
 
 #do-install:
 #	${PW} addgroup pcpatch

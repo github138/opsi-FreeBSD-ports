@@ -2,3 +2,6 @@
 @dir var/lib/opsi/config/clients
 @dir var/lib/opsi/config/depots
 @dir var/lib/opsi/config/products
+var/lib/opsi/config/clientgroups.ini
+var/lib/opsi/config/productgroups.ini
+
