@@ -39,6 +39,7 @@ pre-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/opsi/modules
 	${MKDIR} ${STAGEDIR}${PREFIX}/var/lib/opsi/config/clients
 	${MKDIR} ${STAGEDIR}${PREFIX}/var/lib/opsi/config/depots
+	${MKDIR} ${STAGEDIR}${PREFIX}/var/lib/opsi/config/products
 
 #do-install:
 #	${PW} addgroup pcpatch
@@ -93,6 +94,10 @@ post-install:
 	@if [ ! -e ${PREFIX}/etc/opsi/backendManager/dispatch.conf ]; then \
 		${ECHO_CMD} "Using default dispatch.conf.."; \
 		${CP} ${PREFIX}/etc/opsi/backendManager/dispatch.conf.default ${PREFIX}/etc/opsi/backendManager/dispatch.conf; \
+	fi
+	@if [ ! -e ${PREFIX}/etc/opsi/backendManager/acl.conf ]; then \
+		${ECHO_CMD} "Using default acl.conf.."; \
+		${CP} ${PREFIX}/etc/opsi/backendManager/acl.conf.default ${PREFIX}/etc/opsi/backendManager/acl.conf; \
 	fi
 
 .include <bsd.port.mk>

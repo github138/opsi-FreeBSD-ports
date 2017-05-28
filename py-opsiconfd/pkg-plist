@@ -1,4 +1,5 @@
 @dir lib/configed
 @dir var/lib/opsi/config/clients
 @dir var/lib/opsi/config/depots
+@dir var/lib/opsi/config/products
 @dir etc/opsi/modules
