@@ -23,9 +23,10 @@ LIB_DEPENDS=	libnewt.so:devel/newt
 #USE_PYTHON=     autoplist distutils
 
 MAINTAINER=	youremail@example.com
-COMMENT=	OPSI org Depotserver
+COMMENT=	opsi depotserver
 
-#pre-install:
+post-extract:
+	${REINPLACE_CMD} -e "s|'/etc/|'${PREFIX}/etc/|g" ${WRKSRC}/opsi-setup
 
 do-install:
 #	${PW} addgroup pcpatch
