@@ -1,0 +1,60 @@
+diff --git OPSI/Backend/BackendManager.py OPSI/Backend/BackendManager.py
+index 228f64b3..95bf28a3 100755
+--- OPSI/Backend/BackendManager.py
++++ OPSI/Backend/BackendManager.py
+@@ -56,7 +56,7 @@ from OPSI.Util.MessageBus import MessageBusClient
+ 
+ if os.name == 'posix':
+ 	import grp
+-	import PAM
++	import pam
+ 	import pwd
+ elif os.name == 'nt':
+ 	import win32net
+@@ -789,44 +789,11 @@ class BackendAccessControl(object):
+ 		'''
+ 		logger.confidential(u"Trying to authenticate user {0!r} with password {1!r} by PAM", self._username, self._password)
+ 
+-		class AuthConv:
+-			''' Handle PAM conversation '''
+-			def __init__(self, user, password):
+-				self.user = user
+-				self.password = password
+-
+-			def __call__(self, auth, query_list, userData=None):
+-				response = []
+-				for (query, qtype) in query_list:
+-					logger.debug(u"PAM conversation: query {0!r}, type {1!r}", query, qtype)
+-					if qtype == PAM.PAM_PROMPT_ECHO_ON:
+-						response.append((self.user, 0))
+-					elif qtype == PAM.PAM_PROMPT_ECHO_OFF:
+-						response.append((self.password, 0))
+-					elif qtype in (PAM.PAM_ERROR_MSG, PAM.PAM_TEXT_INFO):
+-						response.append(('', 0))
+-					else:
+-						return None
+-
+-				return response
+-
+ 		try:
+ 			# Create instance
+-			auth = PAM.pam()
+-			auth.start(self._pamService)
++			auth = pam.pam()
+ 			# Authenticate
+-			auth.set_item(PAM.PAM_CONV, AuthConv(self._username, self._password))
+-			# Set the tty
+-			# Workaround for:
+-			#   If running as daemon without a tty the following error
+-			#   occurs with older versions of pam:
+-			#      pam_access: couldn't get the tty name
+-			try:
+-				auth.set_item(PAM.PAM_TTY, '/dev/null')
+-			except Exception:
+-				pass
+-			auth.authenticate()
+-			auth.acct_mgmt()
++			auth.authenticate(self._username, self._password, self._pamService)
+ 
+ 			if self._forceGroups is not None:
+ 				self._userGroups = set(self._forceGroups)
