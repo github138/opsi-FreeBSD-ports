@@ -1,0 +1,15 @@
+#! /bin/sh
+
+if [ "$2" != "POST-DEINSTALL" ]; then
+	exit 0
+fi
+
+# opsi product updater needed this
+if [ -L /etc/opsi ]; then
+	echo "Unlinking /etc/opsi"
+	unlink /etc/opsi
+fi
+if [ -L /bin/bash ]; then
+	echo "Unlinking /bin/bash"
+	unlink /bin/bash
+fi

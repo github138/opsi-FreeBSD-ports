@@ -1,0 +1,4 @@
+# newsyslog conf
+#
+# logfilename			[owner:group]		mode	count	size	when	flags [/pid_file] [sig_num]
+/var/log/opsi/opsipxeconfd.log	opsiconfd:opsiadmin	640	2	*	@T00	CJ

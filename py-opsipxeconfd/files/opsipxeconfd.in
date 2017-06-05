@@ -1,0 +1,73 @@
+#!/bin/sh
+
+# $FreeBSD$
+#
+# PROVIDE: opsipxeconfd
+# REQUIRE: LOGIN mysql samba_service dhcpd opsiconfd
+# KEYWORD: shutdown
+#
+# Add these lines to /etc/rc.conf.local or /etc/rc.conf
+# to enable this service:
+#
+# opsipxeconfd_enable (bool):	Set to NO by default.
+#				Set it to YES to enable.
+
+. /etc/rc.subr
+
+name=opsipxeconfd
+procname=opsipxeconfd
+rcvar=opsipxeconfd_enable
+#opsipxeconfd_user=opsiconfd
+opsipxeconfd_user=root
+
+: ${opsipxeconfd_enable:="NO"}
+
+command=%%PREFIX%%/bin/${name}
+pidfile=/var/run/${name}/${name}.pid
+command_interpreter=%%PYTHON_CMD%%
+procname=%%PREFIX%%/bin/${name}
+#command_args=""
+
+extra_commands="update version"
+
+start_precmd="${name}_precmd"
+stop_cmd="${name}_stop"
+status_cmd="${name}_cmd"
+update_cmd="${name}_cmd"
+version_cmd="${name}_version"
+
+opsipxeconfd_precmd() {
+	install -o ${opsiconfd_user} -g wheel -m 755 -d /var/run/${name}
+	install -o ${opsiconfd_user} -g wheel -m 755 -d /var/log/${name}
+	command_args="$command_args ${rc_arg}"
+}
+
+opsipxeconfd_version() {
+	opsipxeconfd_precmd
+
+	${command} ${rc_arg}
+}
+
+opsipxeconfd_cmd() {
+	opsipxeconfd_precmd
+
+	pids=$(check_pidfile ${pidfile} ${command} ${command_interpreter})
+
+	if [ -z "$pids" ]; then
+		echo "No process with pid found. (Check pid file ${pidfile})"
+		return 1;
+	fi
+
+	${command} ${rc_arg}
+}
+
+opsipxeconfd_stop() {
+	echo "Stopping $name"
+
+	opsipxeconfd_cmd
+
+	wait_for_pids ${pids}
+}
+
+load_rc_config $name
+run_rc_command "$1"

@@ -1,0 +1,24 @@
+diff --git opsi-admin opsi-admin
+index 6db2eef..7118c68 100755
+--- opsi-admin
++++ opsi-admin
+@@ -37,6 +37,7 @@ import json
+ import locale
+ import os
+ import os.path
++import platform
+ import select
+ import subprocess
+ import sys
+@@ -1733,7 +1734,10 @@ class CommandTask(Command):
+ 				process.close()
+ 			except Exception:
+ 				# unix
+-				process = os.popen(u'%s 1>/dev/null 2>/dev/null' % which(u'chpasswd'), 'w')
++				if platform.system().lower().endswith('bsd'):
++					process = os.popen(u'%s 1>/dev/null 2>/dev/null' % which(u'chpass'), 'w')
++				else:
++					process = os.popen(u'%s 1>/dev/null 2>/dev/null' % which(u'chpasswd'), 'w')
+ 				process.write((u"pcpatch:%s\n" % password).encode(outEncoding))
+ 				process.close()
+ 

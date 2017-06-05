@@ -1,0 +1,25 @@
+/tftpboot/linux/chain.c32
+/tftpboot/linux/install
+/tftpboot/linux/install-x64
+/tftpboot/linux/install64
+/tftpboot/linux/menu.c32
+/tftpboot/linux/miniroot-20170405.bz2
+/tftpboot/linux/miniroot-x64-20170405.bz2
+/tftpboot/linux/miniroot-x64.bz2
+/tftpboot/linux/miniroot.bz2
+/tftpboot/linux/pxelinux.0
+/tftpboot/linux/pxelinux.cfg/default
+/tftpboot/linux/pxelinux.cfg/default.menu
+/tftpboot/linux/pxelinux.cfg/default.nomenu
+/tftpboot/linux/pxelinux.cfg/elilo.conf
+/tftpboot/linux/pxelinux.cfg/elilo.efi
+/tftpboot/linux/pxelinux.cfg/install
+/tftpboot/linux/pxelinux.cfg/install-elilo-x64
+/tftpboot/linux/pxelinux.cfg/install-elilo-x86
+/tftpboot/linux/pxelinux.cfg/install-x64
+/tftpboot/linux/pxelinux.cfg/install3264
+/tftpboot/linux/vmlinuz-4.10.8
+/tftpboot/linux/vmlinuz-x64-4.10.8
+@dir /tftpboot/linux/pxelinux.cfg
+@dir /tftpboot/linux
+@dir /tftpboot

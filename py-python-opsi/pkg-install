@@ -1,0 +1,56 @@
+#! /bin/sh
+
+if [ "$2" != "POST-INSTALL" ]; then
+	exit 0
+fi
+
+	fileadmingroup=$(grep "fileadmingroup" ${PKG_PREFIX}/etc/opsi/opsi.conf | cut -d "=" -f 2 | tr -d '[:space:]')
+	if [ -z "$fileadmingroup" ]; then
+		fileadmingroup=pcpatch
+	fi
+
+	echo "Using fileadmingroup: $fileadmingroup"
+
+	if [ $fileadmingroup != pcpatch -a -z "$(getent group $fileadmingroup)" ]; then
+		pw groupmod pcpatch -n $fileadmingroup
+	else
+		if [ -z "$(getent group $fileadmingroup)" ]; then
+			pw groupadd $fileadmingroup
+		fi
+	fi
+
+	if [ -z "`getent group opsiadmin`" ]; then
+		echo "  -> Adding group opsiadmin"
+		pw groupadd opsiadmin
+	fi
+
+	if [ -z "`getent passwd pcpatch`" ]; then
+		echo "  -> Adding user pcpatch"
+		pw useradd pcpatch -g $fileadmingroup
+	fi
+
+	if [ -z "`getent passwd opsiconfd`" ]; then
+		echo "  -> Adding user opsiconfd"
+		pw useradd opsiconfd -g $fileadmingroup
+	fi
+
+	chown -R root:$fileadmingroup ${PKG_PREFIX}/etc/opsi/backendManager
+	find ${PKG_PREFIX}/etc/opsi/backendManager -type d -exec chmod 770 {} \;
+	find ${PKG_PREFIX}/etc/opsi/backendManager -type f -exec chmod 660 {} \;
+	chown -R root:$fileadmingroup ${PKG_PREFIX}/etc/opsi/backends
+	chmod 770 ${PKG_PREFIX}/etc/opsi/backends
+	chmod 660 ${PKG_PREFIX}/etc/opsi/backends/*.conf
+	chown root:$fileadmingroup ${PKG_PREFIX}/etc/opsi/opsi.conf
+	chmod 660 ${PKG_PREFIX}/etc/opsi/opsi.conf
+
+	test -e ${PKG_PREFIX}/etc/opsi/pckeys || touch ${PKG_PREFIX}/etc/opsi/pckeys
+	chown root:$fileadmingroup ${PKG_PREFIX}/etc/opsi/pckeys
+	chmod 660 ${PKG_PREFIX}/etc/opsi/pckeys
+
+	test -e ${PKG_PREFIX}/etc/opsi/passwd || touch ${PKG_PREFIX}/etc/opsi/passwd
+	chown root:$fileadmingroup ${PKG_PREFIX}/etc/opsi/passwd
+	chmod 660 ${PKG_PREFIX}/etc/opsi/passwd
+
+	# Processing files for the SSH extension
+	chown opsiconfd:opsiadmin ${PKG_PREFIX}/etc/opsi/server_commands_default.conf
+	chmod 440 ${PKG_PREFIX}/etc/opsi/server_commands_default.conf

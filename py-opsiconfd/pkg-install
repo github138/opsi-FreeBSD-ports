@@ -1,0 +1,84 @@
+#! /bin/sh
+
+if [ "$2" == "POST-INSTALL" ]; then
+	mkdir -p /var/log/opsi/opsiconfd
+
+	fileadmingroup=$(grep "fileadmingroup" ${PKG_PREFIX}/etc/opsi/opsi.conf | cut -d "=" -f 2 | tr -d '[:space:]')
+	if [ -z "$fileadmingroup" ]; then
+		fileadmingroup=pcpatch
+	fi
+
+	echo "Using fileadmingroup: $fileadmingroup"
+
+	if [ $fileadmingroup != pcpatch -a -z "$(getent group $fileadmingroup)" ]; then
+		pw groupmod pcpatch -n $fileadmingroup
+	else
+		if [ -z "$(getent group $fileadmingroup)" ]; then
+			pw groupadd $fileadmingroup
+		fi
+	fi
+
+	if [ -z "`getent passwd opsiconfd`" ]; then
+		echo "  -> Adding user opsiconfd"
+		pw useradd opsiconfd -g $fileadmingroup
+	fi
+
+	if [ -z "`getent group opsiadmin`" ]; then
+		pw groupadd opsiadmin
+	fi
+
+	pw usermod opsiconfd -G opsiadmin
+
+	if [ ! -e ${PKG_PREFIX}/etc/opsi/opsiconfd.pem ]; then
+                echo "Creating certificate.."
+		umask 077
+
+		cert_country="DE"
+		cert_state="RP"
+		cert_locality="Mainz"
+		cert_organization="uib GmbH"
+		cert_commonname=`hostname -f`
+		cert_email="root@$cert_commonname"
+
+		echo "RANDFILE = /tmp/opsiconfd.rand" 	>  /tmp/opsiconfd.cnf
+		echo "" 				>> /tmp/opsiconfd.cnf
+		echo "[ req ]" 				>> /tmp/opsiconfd.cnf
+		echo "default_bits = 1024" 		>> /tmp/opsiconfd.cnf
+		echo "encrypt_key = yes" 		>> /tmp/opsiconfd.cnf
+		echo "distinguished_name = req_dn" 	>> /tmp/opsiconfd.cnf
+		echo "x509_extensions = cert_type" 	>> /tmp/opsiconfd.cnf
+		echo "prompt = no" 			>> /tmp/opsiconfd.cnf
+		echo "" 				>> /tmp/opsiconfd.cnf
+		echo "[ req_dn ]" 			>> /tmp/opsiconfd.cnf
+		echo "C=$cert_country"			>> /tmp/opsiconfd.cnf
+		echo "ST=$cert_state" 			>> /tmp/opsiconfd.cnf
+		echo "L=$cert_locality" 		>> /tmp/opsiconfd.cnf
+		echo "O=$cert_organization" 		>> /tmp/opsiconfd.cnf
+		#echo "OU=$cert_unit" 			>> /tmp/opsiconfd.cnf
+		echo "CN=$cert_commonname" 		>> /tmp/opsiconfd.cnf
+		echo "emailAddress=$cert_email"		>> /tmp/opsiconfd.cnf
+		echo "" 				>> /tmp/opsiconfd.cnf
+		echo "[ cert_type ]" 			>> /tmp/opsiconfd.cnf
+		echo "nsCertType = server" 		>> /tmp/opsiconfd.cnf
+
+                dd if=/dev/urandom of=/tmp/opsiconfd.rand count=1 2>/dev/null
+                openssl req -new -x509 -days 1000 -nodes \
+                        -config /tmp/opsiconfd.cnf -out ${PKG_PREFIX}/etc/opsi/opsiconfd.pem -keyout ${PKG_PREFIX}/etc/opsi/opsiconfd.pem
+                openssl gendh -rand /tmp/opsiconfd.rand 512 >> ${PKG_PREFIX}/etc/opsi/opsiconfd.pem
+                openssl x509 -subject -dates -fingerprint -noout -in ${PKG_PREFIX}/etc/opsi/opsiconfd.pem
+                rm -f /tmp/opsiconfd.rand /tmp/opsiconfd.cnf
+
+                chmod 600 ${PKG_PREFIX}/etc/opsi/opsiconfd.pem
+		chown opsiconfd:opsiadmin ${PKG_PREFIX}/etc/opsi/opsiconfd.pem
+        fi
+
+	chmod 750 /var/log/opsi/opsiconfd
+	chown -R opsiconfd:$fileadmingroup /var/log/opsi/opsiconfd
+
+	# TODO Re/Start Service
+
+
+	exit 0
+fi
+
+exit 0

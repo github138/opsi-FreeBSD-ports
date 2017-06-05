@@ -1,0 +1,44 @@
+#!/bin/sh
+
+# $FreeBSD$
+#
+# PROVIDE: opsiconfd
+#
+# REQUIRE: LOGIN mysql samba_server dhcpd
+# KEYWORD: shutdown
+#
+# Add these lines to /etc/rc.conf.local or /etc/rc.conf
+# to enable this service:
+#
+# opsiconfd_enable (bool):	Set to NO by default.
+#				Set it to YES to enable.
+
+. /etc/rc.subr
+
+name=opsiconfd
+procname=opsiconfd
+rcvar=opsiconfd_enable
+#opsiconfd_user=opsiconfd
+opsiconfd_user=root
+
+: ${opsiconfd_enable:="NO"}
+
+command=%%PREFIX%%/bin/${name}
+pidfile=/var/run/${name}/${name}.pid
+command_interpreter=%%PYTHON_CMD%%
+#command_args=""
+
+start_precmd="${name}_start"
+
+opsiconfd_start() {
+	echo "Set directory permissions.."
+	install -o ${opsiconfd_user} -g wheel -m 755 -d /var/run/${name}
+	install -o ${opsiconfd_user} -g wheel -m 755 -d /var/run/opsi-message-bus
+	install -o ${opsiconfd_user} -g wheel -m 755 -d /var/lib/${name}
+	install -o ${opsiconfd_user} -g wheel -m 755 -d /var/lib/rrd
+	install -o ${opsiconfd_user} -m 755 -d /var/log/opsi/${name}
+	rc_flags="-D ${rc_flags}"
+}
+
+load_rc_config $name
+run_rc_command "$1"

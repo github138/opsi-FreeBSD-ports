@@ -1,0 +1,92 @@
+#! /bin/sh
+
+if [ "$2" == "POST-INSTALL" ]; then
+
+	mkdir -p /home/opsiproducts
+	mkdir -p /var/lib/opsi/ntfs-images
+	mkdir -p /var/lib/opsi/depot
+	mkdir -p /var/lib/opsi/repository
+	mkdir -p /var/log/opsi/clientconnect
+	mkdir -p /var/log/opsi/bootimage
+	mkdir -p /var/log/opsi/instlog
+	mkdir -p /var/log/opsi/userlogin
+
+	fileadmingroup=$(grep "fileadmingroup" ${PKG_PREFIX}/etc/opsi/opsi.conf | cut -d "=" -f 2 | tr -d '[:space:]')
+	if [ -z "$fileadmingroup" ]; then
+		fileadmingroup=pcpatch
+	fi
+
+	echo "Using fileadmingroup: $fileadmingroup"
+
+	if [ $fileadmingroup != pcpatch -a -z "$(getent group $fileadmingroup)" ]; then
+		echo "  -> Renaming group pcpatch to $fileadmingroup"
+		pw groupmod pcpatch -n $fileadmingroup
+	else
+		if [ -z "$(getent group $fileadmingroup)" ]; then
+			echo "  -> Adding group $fileadmingroup"
+			pw groupadd $fileadmingroup
+		fi
+	fi
+
+	if [ -z "`getent passwd pcpatch`" ]; then
+		echo "  -> Adding user pcpatch"
+		pw useradd pcpatch -g $fileadmingroup
+	fi
+
+	if [ -z "`getent passwd opsiconfd`" ]; then
+		echo "  -> Adding user opsiconfd"
+		pw useradd opsiconfd -g $fileadmingroup
+	fi
+
+	smbfile=${PKG_PREFIX}/etc/smb4.conf
+	if [ ! -e "$smbfile" ]; then
+		echo "Creating $smbfile.."
+		echo [global] > $smbfile
+		echo workgroup = WORKGROUP >> $smbfile
+		echo server string = Samba Server Version %v >> $smbfile
+		echo netbios name = ExampleMachine >> $smbfile
+		echo wins support = Yes >> $smbfile
+		echo security = user >> $smbfile
+		echo passdb backend = tdbsam >> $smbfile
+		echo >> $smbfile
+	fi
+
+	# Install
+	echo "*****************************************************"
+	echo
+	echo Create adminuser
+	echo
+	echo pw adduser adminuser -G opsiadmin,pcpatch
+	echo passwd adminuser
+	echo smbpasswd -a adminuser
+	echo
+	echo On install run the following
+	echo
+	echo ${PKG_PREFIX}/bin/opsi-setup --init-current-config --auto-configure-dhcpd --auto-configure-samba || true
+	echo ${PKG_PREFIX}/bin/opsi-setup --set-rights || true
+	echo
+	echo Set pcpatch user password
+	echo opsi-admin -d task setPcpatchPassword
+	echo
+	echo to Install/Update opsi-products
+	echo opsi-product-updater -vv -i
+	echo
+	echo "*****************************************************"
+
+	exit 0
+fi
+
+if [ "$2" == "POST-UPGRADE" ]; then
+	# Upgrade
+	echo
+	echo On upgrade run the following
+	echo
+	echo ${PKG_PREFIX}/bin/opsi-setup --update-from unknown || true
+	echo ${PKG_PREFIX}/bin/opsi-setup --set-rights  ${PKG_PREFIX}/etc/opsi || true
+	echo ${PKG_PREFIX}/bin/opsi-setup --set-rights /tftpboot || true
+	echo "*****************************************************"
+
+	exit 0
+fi
+
+exit 0

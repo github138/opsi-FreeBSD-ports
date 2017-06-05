@@ -1,0 +1,20 @@
+# !/bin/sh
+
+if [ "$2" != "POST-INSTALL" ]; then
+	exit 0
+fi
+
+if [ ! -e "${PKG_PREFIX}/etc/opsi/opsi-product-updater.conf" ]; then
+	echo "Creating opsi-product-updater.conf.."
+	cp ${PKG_PREFIX}/etc/opsi/opsi-product-updater.conf.dist ${PKG_PREFIX}/etc/opsi/opsi-product-updater.conf
+fi
+
+# opsi product updater scripts needs this
+if [ ! -e /etc/opsi ]; then
+	echo "Linking /etc/opsi to ${PKG_PREFIX}/etc/opsi"
+	ln -s ${PKG_PREFIX}/etc/opsi /etc/opsi
+fi
+if [ ! -e /bin/bash ]; then
+	echo "Linking /bin/bash to ${PKG_PREFIX}/bin/bash"
+	ln -s ${PKG_PREFIX}/bin/bash /bin/bash
+fi
