@@ -35,7 +35,7 @@ opsiconfd_start() {
 	install -o ${opsiconfd_user} -g wheel -m 755 -d /var/run/${name}
 	install -o ${opsiconfd_user} -g wheel -m 755 -d /var/run/opsi-message-bus
 	install -o ${opsiconfd_user} -g wheel -m 755 -d /var/lib/${name}
-	install -o ${opsiconfd_user} -g wheel -m 755 -d /var/lib/rrd
+	install -o ${opsiconfd_user} -g wheel -m 755 -d /var/lib/${name}/rrd
 	install -o ${opsiconfd_user} -m 755 -d /var/log/opsi/${name}
 	rc_flags="-D ${rc_flags}"
 }
