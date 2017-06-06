@@ -3,4 +3,4 @@
 # logfilename				[owner:group]		mode	count	size	when	flags [/pid_file] [sig_num]
 /var/log/opsi/package.log		opsiconfd:opsiadmin	640	2	10000	@T00	CJ
 /var/log/opsi/opsiconfd/opsiconfd.log	opsiconfd:opsiadmin	640	2	5000	$W0D0	CJ
-/var/log/opsi/opsiconfd/[0-9].log	opsiconfd:opsiadmin	640	2	5000	$W0D0	CJ
+/var/log/opsi/opsiconfd/[1-9]*.log	opsiconfd:opsiadmin	640	2	5000	$W0D0	CJ
