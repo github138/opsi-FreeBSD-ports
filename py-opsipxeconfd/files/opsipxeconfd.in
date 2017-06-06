@@ -37,8 +37,8 @@ update_cmd="${name}_cmd"
 version_cmd="${name}_version"
 
 opsipxeconfd_precmd() {
-	install -o ${opsiconfd_user} -g wheel -m 755 -d /var/run/${name}
-	install -o ${opsiconfd_user} -g wheel -m 755 -d /var/log/${name}
+	install -o ${opsipxeconfd_user} -g wheel -m 755 -d /var/run/${name}
+	install -o ${opsipxeconfd_user} -g wheel -m 755 -d /var/log/${name}
 	command_args="$command_args ${rc_arg}"
 }
 
