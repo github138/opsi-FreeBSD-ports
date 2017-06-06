@@ -30,14 +30,13 @@ procname=%%PREFIX%%/bin/${name}
 
 extra_commands="update version"
 
-start_precmd="${name}_precmd"
+start_precmd="${name}_prestart"
 stop_cmd="${name}_stop"
 status_cmd="${name}_cmd"
 update_cmd="${name}_cmd"
 version_cmd="${name}_version"
 
 opsipxeconfd_precmd() {
-	install -o ${opsipxeconfd_user} -g wheel -m 755 -d /var/run/${name}
 	command_args="$command_args ${rc_arg}"
 }
 
@@ -58,6 +57,13 @@ opsipxeconfd_cmd() {
 	fi
 
 	${command} ${rc_arg}
+}
+
+opsipxeconfd_prestart() {
+	echo "Set directory permissions.."
+	install -o ${opsipxeconfd_user} -g wheel -m 755 -d /var/run/${name}
+	install -o ${opsipxeconfd_user} -g wheel -m 755 -d /var/log/${name}
+	opsipxeconfd_precmd
 }
 
 opsipxeconfd_stop() {
