@@ -30,7 +30,7 @@ pkg install -y gettext-tools zsync asciidoc bash newt sudo samba46
 
 #### wimlib
 ```
-pkg install -y  gmake e2fsprogs-libuuid fusefs-libs libublio
+pkg install -y  gmake e2fsprogs-libuuid fusefs-libs libublio pkgconf
 ```
 
 #### if dhcp server is needed
@@ -111,5 +111,6 @@ service opsiconfd start
 service opsipxeconfd start
 ```
 
-go to https://<opsidepotserver>:4447
+`go to https://<opsidepotserver>:4447`
+
 also see http://uib.de/de/opsi-dokumentation/dokumentationen/
