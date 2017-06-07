@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	opsi-linux-bootimage
-DISTVERSION=	20170405
+DISTVERSION=	20170508
 DISTVERSIONSUFFIX=	1
 MASTER_SITES=	http://download.opensuse.org/repositories/home:/uibmz:/opsi:/opsi40/xUbuntu_16.04/
 DISTFILES=	${PORTNAME}_${DISTVERSION}-${DISTVERSIONSUFFIX}.tar.gz
