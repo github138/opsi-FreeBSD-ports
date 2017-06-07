@@ -1,6 +1,4 @@
-diff --git opsi-admin opsi-admin
-index 6db2eef..7118c68 100755
---- opsi-admin
+--- opsi-admin.orig	2017-06-07 19:49:47 UTC
 +++ opsi-admin
 @@ -37,6 +37,7 @@ import json
  import locale

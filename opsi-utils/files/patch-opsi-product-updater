@@ -1,0 +1,11 @@
+--- opsi-product-updater.orig	2017-06-07 19:49:47 UTC
++++ opsi-product-updater
+@@ -1170,7 +1170,7 @@ def main():
+ 	pid = os.getpid()
+ 	running = None
+ 	try:
+-		for anotherPid in System.execute("%s -x %s" % (System.which("pidof"), os.path.basename(sys.argv[0])))[0].strip().split():
++		for anotherPid in System.execute("%s -f %s" % (System.which("pgrep"), os.path.basename(sys.argv[0])))[0].strip().split():
+ 			if int(anotherPid) != pid:
+ 				running = anotherPid
+ 	except Exception as error:
