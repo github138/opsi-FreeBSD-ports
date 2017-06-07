@@ -1,0 +1,11 @@
+--- scripts/opsipxeconfd.orig	2017-06-07 19:52:37 UTC
++++ scripts/opsipxeconfd
+@@ -994,7 +994,7 @@ def temporaryPidFile(filepath):
+ 		if oldPid:
+ 			running = False
+ 			try:
+-				pids = execute("%s -x opsipxeconfd" % which("pidof"))[0].strip().split()
++				pids = execute("%s -f opsipxeconfd" % which("pgrep"))[0].strip().split()
+ 				for runningPid in pids:
+ 					if runningPid == oldPid:
+ 						running = True
