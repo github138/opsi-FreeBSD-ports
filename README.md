@@ -50,6 +50,10 @@ pkg install -y mysql56-server
 ```
 
 #### install ports:
+make sure your ports tree is updated
+
+`portsnap fetch update`
+
 ```
 cd opsi-depotserver && make clean install; cd ..
 cd opsi-configed && make clean install; cd ..
