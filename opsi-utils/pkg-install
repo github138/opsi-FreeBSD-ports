@@ -12,9 +12,13 @@ fi
 # opsi product updater scripts needs this
 if [ ! -e /etc/opsi ]; then
 	echo "Linking /etc/opsi to ${PKG_PREFIX}/etc/opsi"
-	ln -s ${PKG_PREFIX}/etc/opsi /etc/opsi
+	ln -s ${PKG_PREFIX}/etc/opsi /etc
 fi
 if [ ! -e /bin/bash ]; then
 	echo "Linking /bin/bash to ${PKG_PREFIX}/bin/bash"
-	ln -s ${PKG_PREFIX}/bin/bash /bin/bash
+	ln -s ${PKG_PREFIX}/bin/bash /bin
+fi
+if [ ! -e /usr/bin/python ]; then
+	echo "Linking /usr/bin/python to ${PKG_PREFIX}/bin/python"
+	ln -s ${PKG_PREFIX}/bin/python /usr/bin
 fi
