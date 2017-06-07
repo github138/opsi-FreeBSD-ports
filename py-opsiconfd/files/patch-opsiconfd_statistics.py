@@ -2,8 +2,8 @@
 +++ opsiconfd/statistics.py
 @@ -44,6 +44,11 @@ try:
  except ImportError:
-	objgraph = None
-
+ 	objgraph = None
+ 
 +try:
 +	import psutil
 +except ImportError:
@@ -13,9 +13,9 @@
  from OPSI.Logger import Logger
  from OPSI.Types import forceUnicode
 @@ -193,9 +198,12 @@ class Statistics(object):
-		if cpu > 100:
-			cpu = 100
-
+ 		if cpu > 100:
+ 			cpu = 100
+ 
 -		with open('/proc/%s/stat' % os.getpid()) as f:
 -			data = f.read().split()
 -		virtMem = int("%0.0f" % (float(data[22]) / (1024 * 1024)))
@@ -25,5 +25,6 @@
 +			with open('/proc/%s/stat' % os.getpid()) as f:
 +				data = f.read().split()
 +			virtMem = int("%0.0f" % (float(data[22]) / (1024 * 1024)))
-
-		return (utime, stime, cpu, virtMem)
+ 
+ 		return (utime, stime, cpu, virtMem)
+ 
