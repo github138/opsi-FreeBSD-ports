@@ -105,7 +105,7 @@ index 228f64b3..307744ee 100755
  			if self._forceGroups is not None:
  				self._userGroups = set(self._forceGroups)
 diff --git OPSI/System/Posix.py OPSI/System/Posix.py
-index 8a8dedda..6602ba12 100644
+index 8a8dedda..69020558 100644
 --- OPSI/System/Posix.py
 +++ OPSI/System/Posix.py
 @@ -47,6 +47,11 @@ import copy as pycopy
@@ -213,12 +213,7 @@ index 8a8dedda..6602ba12 100644
 +					result['broadcast'] = forceIpAddress(parts[2].split()[0].strip())
 +					result['netmask'] = forceIpAddress(parts[3].split()[0].strip())
 +					continue
- 
--	for line in execute(u"{ip} route".format(ip=which(u'ip'))):
--		line = line.lower().strip()
--		match = re.search('via\s(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\sdev\s(\S+)\s*', line)
--		if match and match.group(2).lower() == device.lower():
--			result['gateway'] = forceIpAddress(match.group(1))
++
 +				match = re.search(
 +					"^\w+\s+(?P<ipAddress>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\s+"
 +					"\w+\s+(?P<netmask>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\s+"
@@ -232,7 +227,12 @@ index 8a8dedda..6602ba12 100644
 +					continue
 +
 +				logger.error(u"Unexpected ifconfig line '%s'" % line)
-+
+ 
+-	for line in execute(u"{ip} route".format(ip=which(u'ip'))):
+-		line = line.lower().strip()
+-		match = re.search('via\s(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\sdev\s(\S+)\s*', line)
+-		if match and match.group(2).lower() == device.lower():
+-			result['gateway'] = forceIpAddress(match.group(1))
 +		for line in execute(u"{ip} route".format(ip=which(u'ip'))):
 +			line = line.lower().strip()
 +			match = re.search('via\s(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\sdev\s(\S+)\s*', line)
@@ -260,7 +260,20 @@ index 8a8dedda..6602ba12 100644
  
  			ret = None
  			while ret is None:
-@@ -3670,7 +3699,8 @@ instead of throwing an error.
+@@ -2931,6 +2960,12 @@ class Distribution(object):
+ 
+ 		self.distributor = self._getDistributor()
+ 
++		if not self.distribution:
++			self.distribution = osType
++			self._version = self.kernel.split('-')[0]
++			self.id = self.kernel
++			self.distributor = osType
++
+ 	@property
+ 	def version(self):
+ 		if 'errata' in self._version:
+@@ -3670,7 +3705,8 @@ instead of throwing an error.
  	locations = (
  		u"/etc/init.d/dhcpd",  # suse / redhat / centos
  		u"/etc/init.d/isc-dhcp-server",  # newer debian / ubuntu
@@ -270,7 +283,7 @@ index 8a8dedda..6602ba12 100644
  	)
  
  	for filename in locations:
-@@ -3731,7 +3761,7 @@ def getDHCPServiceName():
+@@ -3731,7 +3767,7 @@ def getDHCPServiceName():
  	Returns `None` if no known service was detected.
  	"""
  	knownServices = (
@@ -279,7 +292,7 @@ index 8a8dedda..6602ba12 100644
  	)
  
  	try:
-@@ -3769,7 +3799,7 @@ service name was detected by the automatic approach.
+@@ -3769,7 +3805,7 @@ service name was detected by the automatic approach.
  	if distro.distribution.strip() == u'SUSE Linux Enterprise Server':
  		return u"smb"
  
@@ -288,7 +301,7 @@ index 8a8dedda..6602ba12 100644
  
  	for servicename in getServiceNames():
  		if servicename in possibleNames:
-@@ -3816,7 +3846,10 @@ Used for testing.
+@@ -3816,7 +3852,10 @@ Used for testing.
  		try:
  			_serviceStatusOutput = execute(u"{0} list-unit-files".format(which("systemctl")))
  		except Exception:
@@ -300,7 +313,7 @@ index 8a8dedda..6602ba12 100644
  
  	patterns = [
  		'\[.*\]\s+(?P<servicename>.+)',  # Debian
-@@ -3824,6 +3857,7 @@ Used for testing.
+@@ -3824,6 +3863,7 @@ Used for testing.
  		'(?P<servicename>.+) w',  # RHEL 6, part 2
  		r'(?P<servicename>([\w-]|@)+)\.service',  # systemd-based
  		'Checking the status of (?P<servicename>.+)\s+',  # opensuse 12.1
