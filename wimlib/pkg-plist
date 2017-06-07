@@ -22,7 +22,7 @@ lib/libwim.la
 lib/libwim.so
 lib/libwim.so.15
 lib/libwim.so.15.13.0
-lib/pkgconfig/wimlib.pc
+libdata/pkgconfig/wimlib.pc
 man/man1/mkwinpeimg.1.gz
 man/man1/wimappend.1.gz
 man/man1/wimapply.1.gz

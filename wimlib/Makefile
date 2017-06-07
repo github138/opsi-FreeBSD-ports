@@ -10,7 +10,7 @@ BUILD_DEPENDS=	fusefs-ntfs>2016.7.28:sysutils/fusefs-ntfs
 
 USE_PACKAGE_DEPENDS=yes
 
-USES=		gmake
+USES=		gmake pkgconfig
 GNU_CONFIGURE=  yes
 
 .include <bsd.port.mk>
