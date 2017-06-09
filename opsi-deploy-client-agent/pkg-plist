@@ -1,1 +1,1 @@
-bin/opsi-deploy-client-agent
+/var/lib/opsi/depot/opsi-client-agent/opsi-deploy-client-agent

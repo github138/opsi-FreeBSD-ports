@@ -29,7 +29,7 @@ post-extract:
 
 do-install:
 	${RM}  ${WRKSRC}/opsi-*.bak
-	${MKDIR} ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_SCRIPT} ${WRKSRC}/opsi-* ${STAGEDIR}${PREFIX}/bin	
+	${MKDIR} ${STAGEDIR}/var/lib/opsi/depot/opsi-client-agent
+	${INSTALL_SCRIPT} ${WRKSRC}/opsi-deploy-client-agent ${STAGEDIR}/var/lib/opsi/depot/opsi-client-agent
 
 .include <bsd.port.mk>
