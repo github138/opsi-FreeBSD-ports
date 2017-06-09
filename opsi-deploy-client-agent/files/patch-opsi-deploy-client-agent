@@ -1,0 +1,35 @@
+--- opsi-deploy-client-agent.orig	2017-06-09 19:21:36 UTC
++++ opsi-deploy-client-agent
+@@ -245,8 +245,8 @@ class DeployThread(threading.Thread):
+ 		alive = False
+ 		try:
+ 			for line in execute(u"ping -q -c2 {address}".format(address=ipAddress)):
+-				match = re.search("\s+(\d+)%\s+packet\s+loss", line)
+-				if match and (forceInt(match.group(1)) < 100):
++				match = re.search("\s+(\d+(\.\d+))%\s+packet\s+loss", line)
++				if match and (forceInt(float(match.group(1))) < 100):
+ 					alive = True
+ 		except Exception as error:
+ 			logger.error(error)
+@@ -321,15 +321,13 @@ class DeployThread(threading.Thread):
+ 	@staticmethod
+ 	def _getMacAddress(ipAddress):
+ 		mac = u''
+-		with open("/proc/net/arp") as arptable:
+-			for line in arptable:
+-				line = line.strip()
+-				if not line:
+-					continue
++		for line in execute(u"arp -an | awk '$2 == \"({address})\" {{ print $4 }}'".format(address=ipAddress)):
++			line = line.strip()
++			if not line:
++				continue
+ 
+-				if line.split()[0] == ipAddress:
+-					mac = line.split()[3].lower().strip()
+-					break
++			mac = line.lower().strip()
++			break
+ 
+ 		if not mac or (mac == u'00:00:00:00:00:00'):
+ 			mac = u''
