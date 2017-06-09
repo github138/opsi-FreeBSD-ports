@@ -9,6 +9,8 @@ CATEGORIES=	sysutils
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}
 
+RUN_DEPENDS=	wmi-client>0:net-mgmt/wmi-client
+
 NO_BUILD=	yes
 
 USES=   shebangfix python

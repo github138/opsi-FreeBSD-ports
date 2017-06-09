@@ -33,6 +33,12 @@ pkg install -y gettext-tools zsync asciidoc bash newt sudo samba46
 pkg install -y  gmake e2fsprogs-libuuid fusefs-libs libublio pkgconf
 ```
 
+#### opsi-deploy-client-agent
+winexe
+```
+pkg install -y wmi-client
+```
+
 #### if dhcp server is needed
 ```
 pkg install -y isc-dhcp43-server
